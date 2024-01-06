@@ -1,11 +1,23 @@
 import string
 import secrets
+import re
 alphabet = string.ascii_letters + string.digits
-n=int(input("Enter the size of the password: ")
+
 while True:
-    password = ''.join(secrets.choice(alphabet) for i in range(n))
-    if (any(c.islower() for c in password)
-            and any(c.isupper() for c in password)
-            and sum(c.isdigit() for c in password) >= 3):
+    try:
+        n = int(input("Enter the size of the password: "))
+        if n < 3 or n > 40:
+            print("Password size should be between 3 and 40.")
+        else:
+            break
+    except ValueError:
+        print("Invalid input. Please enter a valid number.")
+
+password_requirements = re.compile(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{3,}$')
+
+while True:
+    password = ''.join(secrets.choice(alphabet) for _ in range(n))
+    if password_requirements.match(password):
         break
+
 print(password)
